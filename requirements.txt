@@ -1,0 +1,8 @@
+google-adk
+python-dotenv
+yfinance
+duckduckgo-search
+pandas-ta
+pandas
+numpy
+uvicorn[standard]
