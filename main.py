@@ -3,6 +3,7 @@ Titan Platform - Agent Entry Point
 Main application for the enterprise multi-agent investment analysis system
 """
 from google.adk.sessions import Session
+from google.adk.runners import Runner
 import os
 from dotenv import load_dotenv
 import sys
@@ -41,12 +42,8 @@ def main():
     print('  "Backtest buy-and-hold on AAPL for 5 years"')
     print("\nType 'quit' or 'exit' to stop\n")
     
-    # Create session with required parameters
-    session = Session(
-        id="titan-session-001",
-        appName="Titan Platform",
-        userId="default-user"
-    )
+    # Create Runner (proper ADK pattern for programmatic execution)
+    runner = Runner(agent=market_trend_principal, app_name="titan_platform")
     
     # Interactive loop
     while True:
@@ -63,11 +60,16 @@ def main():
             print("\n🔄 Processing through 17-agent hierarchy...")
             print("-" * 70)
             
-            # Use query() method with message format (ADK standard)
-            response = market_trend_principal.query(
-                message=user_input,
-                session=session
-            )
+            # Use Runner.run() with message (ADK standard pattern)
+            result = runner.run(message=user_input)
+            
+            # Extract text response
+            if hasattr(result, 'text'):
+                response = result.text
+            elif isinstance(result, str):
+                response = result
+            else:
+                response = str(result)
             
             print("\n📊 TITAN INVESTMENT COMMITTEE ANALYSIS:\n")
             print(response)
@@ -79,6 +81,18 @@ def main():
         except Exception as e:
             print(f"\n❌ Error: {str(e)}")
             print(f"Error type: {type(e).__name__}")
+            
+            # Check for API quota errors
+            if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
+                print("\n⚠️  API QUOTA EXCEEDED")
+                print("Your Google AI API has hit rate limits.")
+                print("Please wait a few minutes and try again, or:")
+                print("  - Check your API usage: https://ai.dev/usage")
+                print("  - Get a new API key: https://aistudio.google.com/apikey")
+            elif "INVALID_ARGUMENT" in str(e) or "API Key not found" in str(e):
+                print("\n⚠️  API KEY ERROR")
+                print("Check your .env file has valid GOOGLE_API_KEY")
+            
             import traceback
             print(f"\nFull traceback:")
             traceback.print_exc()
