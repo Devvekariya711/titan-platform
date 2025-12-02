@@ -71,24 +71,101 @@ technical_analyst = Agent(
     tools=[market_data_tool, technical_indicators_tool, price_action_tool]
 )
 
-# ================== FUNDAMENTAL ANALYST (MONTH 2 - PLACEHOLDER) ==================
+# ================== FUNDAMENTAL ANALYST (MONTH 2 - OPERATIONAL) ==================
+
+FUNDAMENTAL_ANALYST_INSTRUCTION = """
+You are a **FundamentalAnalyst** - an earnings and valuation specialist.
+
+## CRITICAL CONSTRAINT:
+**MAX OUTPUT: 200 WORDS TOTAL**
+
+## YOUR ROLE:
+Analyze company fundamentals: earnings, P/E ratios, revenue growth, valuation.
+
+## YOUR TOOLS:
+1. **earnings_data**: Get latest earnings results
+2. **pe_ratio**: Calculate P/E and valuation metrics
+
+## STRICT OUTPUT FORMAT:
+```
+## Fundamental Analysis for [TICKER]
+
+**Earnings**:
+- EPS: $[actual] vs Est $[estimate] ([BEAT/MISS])
+- Revenue: $[amount]B ([growth]% YoY)
+- Next Earnings: [date]
+
+**Valuation**:
+- P/E Ratio: [XX]
+- Forward P/E: [XX]
+- Valuation: [UNDERVALUED/FAIRLY VALUED/OVERVALUED]
+
+**SIGNAL**: [BUY/HOLD/SELL]
+**CONFIDENCE**: [XX%]
+**REASONING**: [1-2 sentences on valuation]
+```
+
+**CRITICAL**: Under 200 words. Fundamentals only.
+"""
+
+# Import additional tools
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
+from agent_platform.tools.quant_tools_extended import earnings_data_tool, pe_ratio_tool
 
 fundamental_analyst = Agent(
     model=LLM,
     name="fundamental_analyst",
-    description="[Month 2] Earnings and valuation specialist. Analyzes P/E ratios, revenue growth, financial health.",
-    instruction="[Month 2 Implementation] You analyze company fundamentals: earnings, P/E ratios, balance sheets.",
-    tools=[]  # Will add in Month 2: earnings_tool, pe_ratio_tool
+    description="Earnings and valuation specialist. Analyzes P/E ratios, revenue growth, financial health.",
+    instruction=FUNDAMENTAL_ANALYST_INSTRUCTION,
+    tools=[earnings_data_tool, pe_ratio_tool]
 )
 
-# ================== MICROSTRUCTURE ANALYST (MONTH 2 - PLACEHOLDER) ==================
+# ================== MICROSTRUCTURE ANALYST (MONTH 2 - OPERATIONAL) ==================
+
+MICROSTRUCTURE_ANALYST_INSTRUCTION = """
+You are a **MicrostructureAnalyst** - an order book and liquidity specialist.
+
+## CRITICAL CONSTRAINT:
+**MAX OUTPUT: 200 WORDS TOTAL**
+
+## YOUR ROLE:
+Analyze market microstructure: order book, liquidity, institutional activity.
+
+## YOUR TOOLS:
+1. **order_book**: Analyze order book depth
+2. **liquidity**: Detect liquidity patterns
+
+## STRICT OUTPUT FORMAT:
+```
+## Microstructure Analysis for [TICKER]
+
+**Order Book**:
+- Bid-Ask Spread: $[amount]
+- Order Imbalance: [BULLISH/NEUTRAL/BEARISH]
+
+**Liquidity**:
+- Avg Volume: [amount]
+- Liquidity Score: [0-100]
+- Status: [EXCELLENT/GOOD/FAIR/POOR]
+
+**SIGNAL**: [LIQUID/ILLIQUID]
+**CONFIDENCE**: [XX%]
+**REASONING**: [1-2 sentences on market structure]
+```
+
+**CRITICAL**: Under 200 words. Microstructure only.
+"""
+
+from agent_platform.tools.quant_tools_extended import order_book_tool, liquidity_tool
 
 microstructure_analyst = Agent(
     model=LLM,
     name="microstructure_analyst",
-    description="[Month 2] Order book and liquidity specialist. Detects institutional activity and whale movements.",
-    instruction="[Month 2 Implementation] You analyze market microstructure: order book depth, liquidity, whale activity.",
-    tools=[]  # Will add in Month 2: order_book_tool, liquidity_tool
+    description="Order book and liquidity specialist. Detects institutional activity and whale movements.",
+    instruction=MICROSTRUCTURE_ANALYST_INSTRUCTION,
+    tools=[order_book_tool, liquidity_tool]
 )
 
 __all__ = ['technical_analyst', 'fundamental_analyst', 'microstructure_analyst']
