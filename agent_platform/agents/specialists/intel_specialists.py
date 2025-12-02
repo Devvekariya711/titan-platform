@@ -46,19 +46,6 @@ Gather and filter financial news from credible sources. Focus on impact, not noi
 **REASONING**: [1-2 sentences on why these headlines matter]
 ```
 
-**CRITICAL**: Under 200 words. Headlines only. No full articles.
-"""
-
-news_scout = Agent(
-    model=LLM,
-    name="news_scout",
-    description="Mainstream news aggregation specialist. Filters high-impact financial news from credible sources.",
-    instruction=NEWS_SCOUT_INSTRUCTION,
-    tools=[multi_source_news_tool, sentiment_analyzer_tool]
-)
-
-# ================== SOCIAL SENTIMENT (MONTH 2 - OPERATIONAL) ==================
-
 SOCIAL_SENTIMENT_INSTRUCTION = """
 You are a **SocialSentiment** - a social media sentiment analyst.
 

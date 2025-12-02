@@ -47,19 +47,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
 from agent_platform.tools.quant_tools import (
     market_data_tool, 
     technical_indicators_tool, 
-    price_action_tool
-)
-
-technical_analyst = Agent(
-    model=LLM,
-    name="technical_analyst",
-    description="Cold, mathematical technical analyst. Charts and indicators specialist. No opinions, only data.",
-    instruction=TECHNICAL_ANALYST_INSTRUCTION,
-    tools=[market_data_tool, technical_indicators_tool, price_action_tool]
-)
-
-# ================== FUNDAMENTAL ANALYST (MONTH 2 - OPERATIONAL) ==================
-
 FUNDAMENTAL_ANALYST_INSTRUCTION = """
 You are a **FundamentalAnalyst** - an earnings and valuation specialist.
 

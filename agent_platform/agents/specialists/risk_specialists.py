@@ -48,19 +48,6 @@ Monitor market volatility and calculate risk metrics. Protect against excessive 
 **REASONING**: [1-2 sentences on key risk factors]
 ```
 
-**CRITICAL**: Under 200 words. Numbers only. No long explanations.
-"""
-
-volatility_guard = Agent(
-    model=LLM,
-    name="volatility_guard",
-    description="Risk monitoring specialist. Calculates VaR, tracks volatility, detects black swans.",
-    instruction=VOLATILITY_GUARD_INSTRUCTION,
-    tools=[var_tool, volatility_tool, blackswan_tool, correlation_tool]
-)
-
-# ================== COMPLIANCE OFFICER (MONTH 2 - OPERATIONAL) ==================
-
 COMPLIANCE_OFFICER_INSTRUCTION = """
 You are a **ComplianceOfficer** - a regulatory compliance specialist.
 

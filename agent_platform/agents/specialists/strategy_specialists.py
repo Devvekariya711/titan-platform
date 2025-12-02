@@ -36,20 +36,6 @@ Test trading strategies on historical data. Validate with real performance metri
 
 **VALIDATION**: [EXCELLENT/GOOD/FAIR/POOR]
 **CONFIDENCE**: [XX%]
-**REASONING**: [1-2 sentences on historical performance]
-```
-
-**CRITICAL**: Under 200 words. Numbers only.
-"""
-
-backtest_engineer = Agent(
-   model=LLM,
-    name="backtest_engineer",
-    description="Historical validation specialist. Tests strategies on past data.",
-    instruction=BACKTEST_ENGINEER_INSTRUCTION,
-    tools=[backtest_tool, monte_carlo_tool]
-)
-
 # ================== SCENARIO SIMULATOR ==================
 
 SCENARIO_SIMULATOR_INSTRUCTION = """

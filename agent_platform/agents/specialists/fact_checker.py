@@ -41,19 +41,6 @@ Verify claims made by other agents. Prevent hallucinations. Ground analysis in f
 - **Credibility**: [HIGH/MEDIUM/LOW]
 
 **OVERALL CREDIBILITY**: [HIGH/MEDIUM/LOW]
-**HALLUCINATION RISK**: [NONE/LOW/MODERATE/HIGH]
-**ACTION**: [APPROVE/FLAG FOR REVIEW/REJECT]
-```
-
-**CRITICAL**:
-- Under 200 words
-- Verify ALL specific claims (numbers, dates, events)
-- Be conservative - flag anything uncertain
-- Prevent AI hallucinations from reaching user
-"""
-
-fact_checker = Agent(
-    model=LLM,
     name="fact_checker",
     description="Truth verification specialist. Prevents hallucinations by verifying claims with Google Search.",
     instruction=FACT_CHECKER_INSTRUCTION,
