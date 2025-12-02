@@ -3,7 +3,6 @@ Titan Platform - Agent Entry Point
 Main application for the enterprise multi-agent investment analysis system
 """
 from google.adk.sessions import Session
-from google.adk.runners import Runner
 import os
 from dotenv import load_dotenv
 import sys
@@ -23,19 +22,31 @@ def main():
     print("=" * 70)
     print("🏛️  TITAN PLATFORM - Enterprise Investment Analysis System")
     print("=" * 70)
-    print("\nPhase: Month 1 - Foundation")
-    print("Hierarchy: L1 (CEO) → L2 (HeadOfQuant) → L3 (TechnicalAnalyst)")
+    print("\nVersion: v0.4-month3")
+    print("Agents: 17 (1 L1 + 4 L2 + 12 L3 + FactChecker)")
+    print("Tools: 28 operational")
+    print("\nHierarchy: CEO → Quant(40%) + Intel(30%) + Risk(20%+VETO) + Strategy(10%)")
     print("\nAvailable Analysis:")
-    print("  ✅ Technical Analysis: RSI, MACD, Bollinger Bands, Support/Resistance")
-    print("  🔄 Fundamental Analysis: Coming in Month 2")
-    print("  🔄 News/Sentiment Intelligence: Coming in Month 2")
-    print("  🔄 Risk Management: Coming in Month 2")
-    print("  🔄 Strategy Validation: Coming in Month 3")
+    print("  ✅ Technical Analysis: RSI, MACD, Bollinger Bands, S/R")
+    print("  ✅ Fundamental Analysis: Earnings, P/E ratios")
+    print("  ✅ News/Sentiment Intelligence: Multi-source analysis")
+    print("  ✅ Risk Management: VaR, volatility, compliance + VETO")
+    print("  ✅ Strategy Validation: Real 5yr historical backtests")
+    print("  ✅ User Personalization: Risk profiles, preferences")
     print("\n" + "=" * 70)
+    print("\nExample queries:")
+    print('  "What is the RSI of Apple?"')
+    print('  "Should I buy Tesla?"')
+    print('  "Analyze NVDA fundamentals"')
+    print('  "Backtest buy-and-hold on AAPL for 5 years"')
     print("\nType 'quit' or 'exit' to stop\n")
     
-    # Create session
-    session = Session()
+    # Create session with required parameters
+    session = Session(
+        id="titan-session-001",
+        appName="Titan Platform",
+        userId="default-user"
+    )
     
     # Interactive loop
     while True:
@@ -49,13 +60,13 @@ def main():
                 print("\n👋 Thank you for using Titan Platform!")
                 break
             
-            print("\n🔄 Analyzing...")
+            print("\n🔄 Processing through 17-agent hierarchy...")
             print("-" * 70)
             
-            # Run agent
+            # Run agent directly (ADK handles session internally)
             response = market_trend_principal.run(user_input, session=session)
             
-            print("\n📊 TITAN ANALYSIS:\n")
+            print("\n📊 TITAN INVESTMENT COMMITTEE ANALYSIS:\n")
             print(response)
             print("\n" + "=" * 70 + "\n")
             
@@ -64,6 +75,7 @@ def main():
             break
         except Exception as e:
             print(f"\n❌ Error: {str(e)}")
+            print(f"Error type: {type(e).__name__}")
             print("Please try again or type 'quit' to exit.\n")
 
 if __name__ == "__main__":
