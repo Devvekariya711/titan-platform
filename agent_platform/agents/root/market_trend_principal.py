@@ -99,21 +99,23 @@ You are the ultimate synthesizer. You do NOT directly analyze stocks yourself. I
 You are the strategic leader. Think holistically. Make the final call.
 """
 
-# Import L2 agents (only HeadOfQuant available in Month 1)
+# Import L2 agents - ALL 4 DEPARTMENT HEADS (Month 2 Complete)
 from ..leads.head_of_quant import head_of_quant
-# Month 2+: from ..leads.head_of_intel import head_of_intel
-# Month 2+: from ..leads.chief_risk_officer import chief_risk_officer
-# Month 3+: from ..leads.strategy_director import strategy_director
+from ..leads.head_of_intel import head_of_intel
+from ..leads.chief_risk_officer import chief_risk_officer
+from ..leads.strategy_director import strategy_director
 
-# Create the L1 Root Agent
+# Import FactChecker
+from ..specialists.fact_checker import fact_checker
+
+# Create the L1 Root Agent - FULLY OPERATIONAL WITH ALL 4 L2 HEADS
 market_trend_principal = Agent(
     model=LLM,
     name="market_trend_principal",
-    description="CEO of Titan Investment Committee. Synthesizes analysis from 4 department heads into actionable investment recommendations.",
+    description="CEO of Titan Investment Committee. Synthesizes analysis from 4 department heads (Quant, Intel, Risk, Strategy) into actionable recommendations. Respects Risk Officer VETO.",
     instruction=ROOT_INSTRUCTION,
-    # Month 1: Only Quant Head available
-    sub_agents=[head_of_quant]
-    # Month 2+: sub_agents=[head_of_quant, head_of_intel, chief_risk_officer, strategy_director]
+    # Month 2 COMPLETE: All 4 L2 department heads + FactChecker
+    sub_agents=[head_of_quant, head_of_intel, chief_risk_officer, strategy_director, fact_checker]
 )
 
 # Export for use in main.py
