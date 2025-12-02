@@ -20,57 +20,60 @@ logger = get_logger("strategy-tools")
 
 def backtest_strategy(ticker: str, strategy: str = "buy_and_hold", period: str = "1y") -> Dict[str, Any]:
     """
-    Backtest trading strategy on historical data
+    Backtest trading strategy on REAL historical data (Month 3 Enhancement)
     
     Args:
         ticker: Stock ticker symbol
-        strategy: Strategy to test (buy_and_hold, momentum, mean_reversion)
-        period: Backtest period
+        strategy: Strategy to test (buy_and_hold, rsi_strategy, ma_crossover)
+        period: Backtest period (1y, 2y, 5y)
     
     Returns:
-        Backtest results with performance metrics
+        REAL backtest results with performance metrics
     """
     try:
+        from datetime import datetime, timedelta
+        import sys
+        import os
+        
+        # Import BacktestEngine
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+        from services.backtest_engine.simulator import get_backtest_engine
+        
         logger.info(f"Backtesting {strategy} for {ticker}", ticker=ticker, strategy=strategy, period=period)
         
-        # Simulated backtest results
-        # In production, would use real historical data from backtest-engine service
-        
-        import random
-        random.seed(hash(ticker + strategy) % 1000)
-        
-        # Simulate performance metrics
-        total_return = round(random.uniform(-15, 35), 2)  # -15% to +35%
-        sharpe_ratio = round(random.uniform(0.5, 2.5), 2)
-        max_drawdown = round(random.uniform(-25, -5), 2)
-        win_rate = round(random.uniform(45, 65), 1)
-        
-        # Performance assessment
-        if total_return > 15 and sharpe_ratio > 1.5:
-            rating = "EXCELLENT"
-            recommendation = "Strategy validated - Strong performance"
-        elif total_return > 5 and sharpe_ratio > 1.0:
-            rating = "GOOD"
-            recommendation = "Strategy acceptable - Moderate performance"
-        elif total_return > 0:
-            rating = "FAIR"
-            recommendation = "Strategy marginal - Consider alternatives"
+        # Calculate date range
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        if period == "1y":
+            start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
+        elif period == "2y":
+            start_date = (datetime.now() - timedelta(days=730)).strftime('%Y-%m-%d')
+        elif period == "5y":
+            start_date = (datetime.now() - timedelta(days=1825)).strftime('%Y-%m-%d')
         else:
-            rating = "POOR"
-            recommendation = "Strategy failed - Do not use"
+            start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
+        
+        # Run REAL backtest
+        engine = get_backtest_engine()
+        result = engine.run_backtest(ticker, strategy, start_date, end_date)
+        
+        if result.get("status") == "error":
+            logger.error(f"Backtest failed: {result.get('message')}", ticker=ticker)
+            return result
+        
+        # Format for tool output
+        metrics = result.get("metrics", {})
         
         return {
             "ticker": ticker,
             "strategy": strategy,
             "period": period,
-            "total_return": total_return,
-            "sharpe_ratio": sharpe_ratio,
-            "max_drawdown": max_drawdown,
-            "win_rate": win_rate,
-            "rating": rating,
-            "recommendation": recommendation,
-            "timestamp": datetime.now().isoformat(),
-            "note": "Simulated backtest - Production would use backtest-engine service",
+            "total_return": metrics.get("total_return"),
+            "sharpe_ratio": metrics.get("sharpe_ratio"),
+            "max_drawdown": metrics.get("max_drawdown"),
+            "win_rate": metrics.get("win_rate"),
+            "num_trades": result.get("num_trades"),
+            "vs_buy_hold": metrics.get("vs_buy_hold"),
+            "note": "REAL historical backtest - Month 3 Enhancement",
             "success": True
         }
         
