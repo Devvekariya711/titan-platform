@@ -9,7 +9,7 @@
 - [x] Basic Root Agent orchestration
 - [x] Supporting agents (Data Scout, Risk Assessor)
 - [x] **Month 1 Foundation**: Monorepo, Services, L1/L2 Agents
-- [x] **Month 2 Intelligence**: Full 17-Agent Hierarchy & 25 Tools
+- [x] **Month 2 Intelligence**: Full 17-Agent Hierarchy & 25 Tools (Tag: `v0.3-month2`)
 
 ---
 
@@ -143,7 +143,7 @@
 - [x] Test: "Why is Tesla dropping?" correlates price + news
 - [x] Test: All L3 agents respond correctly
 - [x] Documentation: Tool catalog created
-- [x] Git: Month 2 committed
+- [x] Git: Month 2 committed (Tag: `v0.3-month2`)
 
 ---
 
