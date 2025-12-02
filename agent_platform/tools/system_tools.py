@@ -87,6 +87,111 @@ def memory_retrieve(user_id: str, query: str, limit: int = 5) -> Dict[str, Any]:
             "success": False
         }
 
+# ================== TOOL 2.1: GET USER CONTEXT (MONTH 3) ==================
+
+def get_user_context(user_id: str) -> Dict[str, Any]:
+    """
+    Get comprehensive user profile including risk tolerance and trading style
+    
+    Args:
+        user_id: User identifier
+    
+    Returns:
+        Complete user context
+    """
+    try:
+        memory = get_memory_bank()
+        context = memory.get_user_context(user_id)
+        
+        logger.info(f"Retrieved user context", user_id=user_id,
+                   has_risk_profile=context.get("risk_profile") is not None)
+        
+        return {
+            "user_id": user_id,
+            "context": context,
+            "timestamp": datetime.now().isoformat(),
+            "success": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Get user context error: {str(e)}", error=str(e))
+        return {
+            "error": f"Failed to get context: {str(e)}",
+            "success": False
+        }
+
+# ================== TOOL 2.2: STORE AGENT OUTPUT (MONTH 3) ==================
+
+def store_agent_output(agent_name: str, ticker: str, output: str, confidence: float) -> Dict[str, Any]:
+    """
+    Store agent output for accuracy tracking
+    
+    Args:
+        agent_name: Name of the agent
+        ticker: Stock ticker
+        output: Analysis output
+        confidence: Confidence score (0-100)
+    
+    Returns:
+        Storage confirmation
+    """
+    try:
+        memory = get_memory_bank()
+        memory.store_agent_output(agent_name, ticker, output, confidence)
+        
+        logger.info(f"Stored agent output", agent_name=agent_name, ticker=ticker)
+        
+        return {
+            "agent_name": agent_name,
+            "ticker": ticker,
+            "confidence": confidence,
+            "status": "STORED",
+            "timestamp": datetime.now().isoformat(),
+            "success": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Store agent output error: {str(e)}", error=str(e))
+        return {
+            "error": f"Failed to store output: {str(e)}",
+            "success": False
+        }
+
+# ================== TOOL 2.3: GET SIMILAR ANALYSIS (MONTH 3) ==================
+
+def get_similar_analysis(ticker: str, days_back: int = 30) -> Dict[str, Any]:
+    """
+    Retrieve similar past analysis for learning
+    
+    Args:
+        ticker: Stock ticker
+        days_back: Number of days to look back
+    
+    Returns:
+        Similar analyses
+    """
+    try:
+        memory = get_memory_bank()
+        results = memory.retrieve_similar_analysis(ticker, timeframe_days=days_back)
+        
+        logger.info(f"Retrieved similar analysis", ticker=ticker, days_back=days_back)
+        
+        return {
+            "ticker": ticker,
+            "days_back": days_back,
+            "results": results,
+            "count": len(results.get("documents", [[]])[0]) if results else 0,
+            "timestamp": datetime.now().isoformat(),
+            "success": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Get similar analysis error: {str(e)}", error=str(e))
+        return {
+            "error": f"Failed to get similar analysis: {str(e)}",
+            "success": False
+        }
+
 # ================== TOOL 3: SEND ALERT ==================
 
 def send_alert(message: str, level: str = "INFO") -> Dict[str, Any]:
@@ -161,11 +266,16 @@ def log_event(event_type: str, data: Dict[str, Any]) -> Dict[str, Any]:
 
 memory_save_tool = FunctionTool(func=memory_save)
 memory_retrieve_tool = FunctionTool(func=memory_retrieve)
+get_user_context_tool = FunctionTool(func=get_user_context)  # Month 3
+store_agent_output_tool = FunctionTool(func=store_agent_output)  # Month 3
+get_similar_analysis_tool = FunctionTool(func=get_similar_analysis)  # Month 3
 send_alert_tool = FunctionTool(func=send_alert)
 log_event_tool = FunctionTool(func=log_event)
 
 # Export
 __all__ = [
     'memory_save_tool', 'memory_retrieve_tool', 'send_alert_tool', 'log_event_tool',
-    'memory_save', 'memory_retrieve', 'send_alert', 'log_event'
+    'get_user_context_tool', 'store_agent_output_tool', 'get_similar_analysis_tool',  # Month 3
+    'memory_save', 'memory_retrieve', 'send_alert', 'log_event',
+    'get_user_context', 'store_agent_output', 'get_similar_analysis'  # Month 3
 ]
