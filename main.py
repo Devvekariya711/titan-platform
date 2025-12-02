@@ -63,8 +63,11 @@ def main():
             print("\n🔄 Processing through 17-agent hierarchy...")
             print("-" * 70)
             
-            # Run agent directly (ADK handles session internally)
-            response = market_trend_principal.run(user_input, session=session)
+            # Use query() method with message format (ADK standard)
+            response = market_trend_principal.query(
+                message=user_input,
+                session=session
+            )
             
             print("\n📊 TITAN INVESTMENT COMMITTEE ANALYSIS:\n")
             print(response)
@@ -76,7 +79,10 @@ def main():
         except Exception as e:
             print(f"\n❌ Error: {str(e)}")
             print(f"Error type: {type(e).__name__}")
-            print("Please try again or type 'quit' to exit.\n")
+            import traceback
+            print(f"\nFull traceback:")
+            traceback.print_exc()
+            print("\nPlease try again or type 'quit' to exit.\n")
 
 if __name__ == "__main__":
     main()
