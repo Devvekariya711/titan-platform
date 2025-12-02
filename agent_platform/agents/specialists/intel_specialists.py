@@ -13,19 +13,6 @@ from agent_platform.tools.intel_tools import (
     multi_source_news_tool,
     reddit_sentiment_tool,
     twitter_sentiment_tool,
-    interest_rates_tool,
-    gdp_tool,
-    geopolitical_tool,
-    sentiment_analyzer_tool
-)
-
-LLM = "gemini-2.5-flash-lite"  # Fast model for specialists
-
-# ================== NEWS SCOUT (MONTH 2 - OPERATIONAL) ==================
-
-NEWS_SCOUT_INSTRUCTION = """
-You are a **NewsScout** - a mainstream news aggregation specialist.
-
 ## CRITICAL CONSTRAINT:
 **MAX OUTPUT: 200 WORDS TOTAL**
 

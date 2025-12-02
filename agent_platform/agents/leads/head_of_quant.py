@@ -4,7 +4,7 @@ Manages 3 L3 specialists: Technical, Fundamental, Microstructure Analysts
 """
 from google.adk.agents import Agent
 
-LLM = "gemini-2.0-flash-exp"
+LLM = "gemini-2.5-flash-lite"
 
 HEAD_OF_QUANT_INSTRUCTION = """
 You are the **HeadOfQuant** - Head of Quantitative Analysis for the Titan Investment Committee.

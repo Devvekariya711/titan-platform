@@ -5,19 +5,6 @@ Month 2 Week 4
 """
 from google.adk.agents import Agent
 import sys
-import os
-
-# Add paths for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
-from agent_platform.tools.intel_tools import google_search_tool, sentiment_analyzer_tool
-
-LLM = "gemini-2.5-flash-lite"
-
-FACT_CHECKER_INSTRUCTION = """
-You are a **FactChecker** - a truth verification and hallucination prevention specialist.
-
-## CRITICAL CONSTRAINT:
-**MAX OUTPUT: 200 WORDS TOTAL**
 
 ## YOUR ROLE:
 Verify claims made by other agents. Prevent hallucinations. Ground analysis in facts.

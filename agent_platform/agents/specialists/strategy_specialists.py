@@ -10,19 +10,6 @@ import os
 # Add paths for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
 from agent_platform.tools.strategy_tools import (
-    backtest_tool,
-    monte_carlo_tool,
-    portfolio_correlation_tool,
-    scenario_tool
-)
-
-LLM = "gemini-2.5-flash-lite"
-
-# ================== BACKTEST ENGINEER ==================
-
-BACKTEST_ENGINEER_INSTRUCTION = """
-You are a **BacktestEngineer** - a historical validation specialist.
-
 ## CRITICAL CONSTRAINT:
 **MAX OUTPUT: 200 WORDS TOTAL**
 

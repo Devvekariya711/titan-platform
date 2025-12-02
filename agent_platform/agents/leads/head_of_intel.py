@@ -5,7 +5,7 @@ Month 2 Week 1
 """
 from google.adk.agents import Agent
 
-LLM = "gemini-2.0-flash-exp"
+LLM = "gemini-2.5-flash-lite"
 
 HEAD_OF_INTEL_INSTRUCTION = """
 You are the **HeadOfIntel** - Head of Intelligence for the Titan Investment Committee.

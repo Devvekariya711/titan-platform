@@ -11,19 +11,6 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
 from agent_platform.tools.risk_tools import (
     var_tool,
-    volatility_tool,
-    compliance_check_tool,
-    correlation_tool,
-    blackswan_tool
-)
-
-LLM = "gemini-2.5-flash-lite"  # Fast model for specialists
-
-# ================== VOLATILITY GUARD (MONTH 2 - OPERATIONAL) ==================
-
-VOLATILITY_GUARD_INSTRUCTION = """
-You are a **VolatilityGuard** - a risk monitoring specialist.
-
 ## CRITICAL CONSTRAINT:
 **MAX OUTPUT: 200 WORDS TOTAL**
 

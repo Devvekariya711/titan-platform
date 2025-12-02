@@ -5,7 +5,7 @@ Month 2 Week 3
 """
 from google.adk.agents import Agent
 
-LLM = "gemini-2.0-flash-exp"
+LLM = "gemini-2.5-flash-lite"
 
 STRATEGY_DIRECTOR_INSTRUCTION = """
 You are the **StrategyDirector** - Director of Strategy Validation for the Titan Investment Committee.

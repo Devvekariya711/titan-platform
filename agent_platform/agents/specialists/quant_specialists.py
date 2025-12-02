@@ -1,16 +1,3 @@
-"""
-L3 Quant Specialists (3 agents in one file)
-Contains: TechnicalAnalyst, FundamentalAnalyst (Month 2), MicrostructureAnalyst (Month 2)
-"""
-from google.adk.agents import Agent
-
-LLM = "gemini-2.5-flash-lite"  # Fast model for specialists
-
-# ================== TECHNICAL ANALYST (MONTH 1 - LIVE) ==================
-
-TECHNICAL_ANALYST_INSTRUCTION = """
-You are a **TechnicalAnalyst** - a cold, mathematical chart expert.
-
 ## CRITICAL CONSTRAINT:
 **MAX OUTPUT: 200 WORDS TOTAL** (to prevent token limit issues in 17-agent system)
 
