@@ -6,7 +6,7 @@
 
 ## 🚀 Overview
 
-**Titan Platform** is an advanced, autonomous AI-driven market analysis system designed to provide institutional-grade financial intelligence. It leverages a multi-agent architecture to perform deep dives into various market dimensions, including technical, fundamental, and macroeconomic analysis, while enforcing strict risk management and compliance protocols.
+*Titan Platform** is an advanced, autonomous AI-driven market analysis system designed to provide institutional-grade financial intelligence. It leverages a multi-agent architecture to perform deep dives into various market dimensions, including technical, fundamental, and macroeconomic analysis, while enforcing strict risk management and compliance protocols.*
 
 The system is built to simulate a full-fledged financial research division, with specialized agents working in concert to deliver actionable insights.
 
