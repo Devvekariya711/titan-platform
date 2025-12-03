@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-LLM = "gemini-2.0-flash-exp"
+LLM = "gemini-2.5-flash-lite"
 
 # L1 Root Instruction
 ROOT_INSTRUCTION = """

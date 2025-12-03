@@ -1,0 +1,93 @@
+﻿python : {"timestamp": "20
+25-12-02T19:51:32.635777",
+ "service": 
+"ingestion-engine", 
+"level": "INFO", 
+"message": 
+"MarketDataConnector 
+initialized", 
+"cache_dir": 
+"./data/cache"}
+At line:1 char:1
++ python 
+agent_platform/main.py 
+run 2>&1 | Out-File 
+-FilePath error_log ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: ({  
+  "timestamp": "..."./d   
+ ata/cache"}:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+E:\KENGEL\market-analyst-p
+roject\agent_platform\main
+.py:29: UserWarning: 
+[EXPERIMENTAL] InMemoryCre
+dentialService: This 
+feature is experimental 
+and may change or be 
+removed in future 
+versions without notice. 
+It may introduce breaking 
+changes at any time.
+  credential_service = InM
+emoryCredentialService()
+C:\Users\devve\AppData\Loc
+al\Packages\PythonSoftware
+Foundation.Python.3.12_qbz
+5n2kfra8p0\LocalCache\loca
+l-packages\Python312\site-
+packages\google\adk\auth\c
+redential_service\in_memor
+y_credential_service.py:33
+: UserWarning: 
+[EXPERIMENTAL] 
+BaseCredentialService: 
+This feature is 
+experimental and may 
+change or be removed in 
+future versions without 
+notice. It may introduce 
+breaking changes at any 
+time.
+  super().__init__()
+======================================================================
+≡ƒÅ¢∩╕Å  TITAN PLATFORM - Enterprise Investment Analysis System
+======================================================================
+
+Phase: Month 1 - Foundation
+Hierarchy: L1 (CEO) ΓåÆ L2 (HeadOfQuant) ΓåÆ L3 (TechnicalAnalyst)
+
+Available Analysis:
+  Γ£à Technical Analysis: RSI, MACD, Bollinger Bands, Support/Resistance
+  ≡ƒöä Fundamental Analysis: Coming in Month 2
+  ≡ƒöä News/Sentiment Intelligence: Coming in Month 2
+  ≡ƒöä Risk Management: Coming in Month 2
+  ≡ƒöä Strategy Validation: Coming in Month 3
+
+======================================================================
+
+Type 'quit' or 'exit' to stop
+
+≡ƒÆ¼ Your query: 
+≡ƒöä Analyzing...
+----------------------------------------------------------------------
+
+≡ƒôè TITAN ANALYSIS:
+
+Error: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API Key not found. Please pass a valid API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API Key not found. Please pass a valid API key.'}]}}
+
+======================================================================
+
+≡ƒÆ¼ Your query: 
+≡ƒæï Thank you for using Titan Platform!
+Unclosed client session
+client_session: <aiohttp.c
+lient.ClientSession 
+object at 
+0x0000019B0CFA1610>

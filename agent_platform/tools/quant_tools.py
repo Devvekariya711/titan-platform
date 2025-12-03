@@ -15,7 +15,9 @@ import os
 
 # Add services to path for data connector
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
-from services.ingestion_engine.connectors import get_connector
+import importlib
+ingestion_module = importlib.import_module('services.ingestion-engine.connectors')
+get_connector = ingestion_module.get_connector
 
 # Use centralized connector
 connector = get_connector()

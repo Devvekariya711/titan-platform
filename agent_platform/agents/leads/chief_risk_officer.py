@@ -5,7 +5,7 @@ Month 2 Week 2
 """
 from google.adk.agents import Agent
 
-LLM = "gemini-2.0-flash-exp"
+LLM = "gemini-2.5-flash-lite"
 
 CHIEF_RISK_OFFICER_INSTRUCTION = """
 You are the **ChiefRiskOfficer** - Chief Risk Officer for the Titan Investment Committee.
