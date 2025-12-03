@@ -2,16 +2,16 @@
 Mock Market Service - Static data for Agent Squad development
 Allows agents to work independently of external APIs during development
 """
-import json
 from datetime import datetime, timedelta
 from typing import Dict, Any
+
 
 class MockMarketService:
     """
     Provides static mock data for AAPL, TSLA, and BTC
     Used for agent development and testing without API dependencies
     """
-    
+
     # Static mock data
     MOCK_DATA = {
         "AAPL": {
@@ -69,15 +69,15 @@ class MockMarketService:
             "resistance": 45000.00
         }
     }
-    
+
     @staticmethod
     def get_market_data(ticker: str) -> Dict[str, Any]:
         """
         Get mock OHLCV data
-        
+
         Args:
             ticker: Stock symbol (AAPL, TSLA, BTC-USD)
-        
+
         Returns:
             Mock market data
         """
@@ -85,14 +85,13 @@ class MockMarketService:
             return {
                 "ticker": ticker,
                 "error": f"Mock data not available for {ticker}. Available: AAPL, TSLA, BTC-USD",
-                "success": False
-            }
-        
+                "success": False}
+
         data = MockMarketService.MOCK_DATA[ticker].copy()
         data["success"] = True
         data["timestamp"] = datetime.now().isoformat()
         data["source"] = "MockMarketService"
-        
+
         # Generate fake OHLCV for last 5 days
         base_price = data["current_price"]
         ohlcv = []
@@ -107,18 +106,18 @@ class MockMarketService:
                 "close": round(base_price * (1 + variance * 0.5), 2),
                 "volume": int(data["volume_avg_30d"] * (1 + variance))
             })
-        
+
         data["ohlcv"] = ohlcv
         return data
-    
+
     @staticmethod
     def get_technicals(ticker: str) -> Dict[str, Any]:
         """
         Get mock technical indicators
-        
+
         Args:
             ticker: Stock symbol
-        
+
         Returns:
             Mock technical indicators
         """
@@ -128,30 +127,32 @@ class MockMarketService:
                 "error": f"Mock data not available for {ticker}",
                 "success": False
             }
-        
+
         data = MockMarketService.MOCK_DATA[ticker]
-        
+
         # Interpret RSI
         rsi_signal = "Overbought" if data["rsi"] > 70 else "Oversold" if data["rsi"] < 30 else "Neutral"
-        
+
         # Interpret MACD
-        macd_interpretation = "Bullish (MACD above signal)" if data["macd"] > data["macd_signal"] else "Bearish (MACD below signal)"
-        
+        macd_interpretation = "Bullish (MACD above signal)" if data["macd"] > data[
+            "macd_signal"] else "Bearish (MACD below signal)"
+
         # Interpret Bollinger Bands
         price = data["current_price"]
         bb_range = data["bollinger_upper"] - data["bollinger_lower"]
         position_pct = ((price - data["bollinger_lower"]) / bb_range) * 100
-        
+
         if position_pct > 80:
             bb_position = "Near upper band (potential overbought)"
         elif position_pct < 20:
             bb_position = "Near lower band (potential oversold)"
         else:
             bb_position = "Middle range (neutral)"
-        
+
         # Interpret MAs
-        ma_trend = "Golden Cross territory (Bullish long-term)" if data["sma_50"] > data["sma_200"] else "Death Cross territory (Bearish long-term)"
-        
+        ma_trend = "Golden Cross territory (Bullish long-term)" if data["sma_50"] > data[
+            "sma_200"] else "Death Cross territory (Bearish long-term)"
+
         return {
             "ticker": ticker,
             "current_price": data["current_price"],
@@ -174,15 +175,15 @@ class MockMarketService:
             "success": True,
             "source": "MockMarketService"
         }
-    
+
     @staticmethod
     def get_price_action(ticker: str) -> Dict[str, Any]:
         """
         Get mock price action analysis
-        
+
         Args:
             ticker: Stock symbol
-        
+
         Returns:
             Mock price action data
         """
@@ -192,14 +193,14 @@ class MockMarketService:
                 "error": f"Mock data not available for {ticker}",
                 "success": False
             }
-        
+
         data = MockMarketService.MOCK_DATA[ticker]
-        
+
         # Determine pattern
         pattern = None
         if data["sma_50"] > data["sma_200"]:
             pattern = "Golden Cross (Bullish signal)"
-        
+
         return {
             "ticker": ticker,
             "current_price": data["current_price"],
@@ -207,32 +208,35 @@ class MockMarketService:
             "trend_strength": 0.75,
             "support_level": data["support"],
             "resistance_level": data["resistance"],
-            "pivot_point": (data["current_price"] + data["support"] + data["resistance"]) / 3,
+            "pivot_point": (
+                data["current_price"] + data["support"] + data["resistance"]) / 3,
             "pattern": pattern,
             "momentum_30d": 5.2,
             "price_range": {
                 "high": data["high_52w"],
                 "low": data["low_52w"],
-                "range_pct": ((data["high_52w"] - data["low_52w"]) / data["low_52w"]) * 100
-            },
+                "range_pct": (
+                    (data["high_52w"] - data["low_52w"]) / data["low_52w"]) * 100},
             "success": True,
-            "source": "MockMarketService"
-        }
+            "source": "MockMarketService"}
+
 
 # Singleton instance
 _mock_service = MockMarketService()
+
 
 def get_mock_service() -> MockMarketService:
     """Get singleton instance"""
     return _mock_service
 
+
 # Example usage
 if __name__ == "__main__":
     service = get_mock_service()
-    
+
     print("Mock Market Service Test")
     print("=" * 70)
-    
+
     for ticker in ["AAPL", "TSLA", "BTC-USD"]:
         print(f"\n{ticker}:")
         market_data = service.get_market_data(ticker)

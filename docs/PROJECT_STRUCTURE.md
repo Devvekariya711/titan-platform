@@ -1,321 +1,367 @@
-# Titan Platform - Complete Project Structure
+# Titan Platform - Project Structure
 
-> **Enterprise-grade multi-agent investment analysis system**  
-> **Repository**: https://github.com/Devvekariya711/titan-platform  
-> **Current Version**: v0.4-month3
+**Current organization after Month 4 cleanup (v1.0.0)**
 
 ---
 
-## 📁 Root Directory Structure
+## 📁 Directory Layout
 
 ```
 titan-platform/
-├── .env                          # Environment variables (API keys)
-├── .github/                      # GitHub configuration
-│   ├── README.md                 # Repository documentation
-│   └── workflows/                # CI/CD workflows (future)
-├── requirements.txt              # Project dependencies
+├── .env                          # User-controllable settings (60+ options)
+├── .env.example                  # Template for .env file
+├── .gitignore                    
+├── README.md                     # Project overview with usage examples
+├── main.py                       # 🆕 Interactive CLI entry point
+├── requirements.txt              # Python dependencies
 │
-├── agent_platform/               # ⭐ MAIN: Agent & Tool Implementation
-├── services/                     # 🔧 Microservices (local simulation)
-├── shared/                       # 📦 Common utilities
-├── docs/                         # 📚 Documentation
-├── tests/                        # 🧪 Testing
-└── venv/                         # Python virtual environment
-
+├── .github/                      # Git-related documentation
+│   ├── API_REFERENCE.md          # All 17 agents & 28 tools documented
+│   ├── DEPLOYMENT_GUIDE.md       # Production setup & Docker
+│   ├── TESTING_GUIDE.md          # Test scenarios & troubleshooting
+│   ├── SECURITY.md               # Security policy
+│   ├── CONTRIBUTING.md           # Contribution guidelines (optional)
+│   ├── LICENSE                   # MIT License
+│   └── workflows/                # GitHub Actions (CI/CD)
+│
+├── docs/                         # 📖 Essential documentation (3 files only)
+│   ├── MASTER_TASKS.md           # Complete task history (all 4 months)
+│   ├── CHANGELOG.md              # Monthly changes & future roadmap
+│   └── PROJECT_STRUCTURE.md      # This file
+│
+├── agent_platform/               # 🤖 Google ADK Agents (17 agents)
+│   ├── __init__.py
+│   ├── dashboard.py              # Metrics dashboard (text + HTML)
+│   │
+│   ├── agents/                   # Agent hierarchy
+│   │   ├── __init__.py
+│   │   │
+│   │   ├── root/                 # L1 - CEO Level (1 agent)
+│   │   │   └── market_trend_principal.py
+│   │   │
+│   │   ├── l2_heads/             # L2 - Department Heads (4 agents)
+│   │   │   ├── head_of_quant.py
+│   │   │   ├── head_of_intel.py
+│   │   │   ├── chief_risk_officer.py
+│   │   │   └── strategy_director.py
+│   │   │
+│   │   └── l3_specialists/       # L3 - Specialists (12 agents)
+│   │       ├── quant/
+│   │       │   ├── technical_analyst.py
+│   │       │   ├── fundamental_analyst.py
+│   │       │   └── microstructure_analyst.py
+│   │       ├── intel/
+│   │       │   ├── news_scout.py
+│   │       │   ├── social_sentiment_analyst.py
+│   │       │   └── macro_economist.py
+│   │       ├── risk/
+│   │       │   ├── volatility_guard.py
+│   │       │   ├── compliance_officer.py
+│   │       │   └── fact_checker.py
+│   │       └── strategy/
+│   │           ├── backtest_engineer.py
+│   │           ├── scenario_simulator.py
+│   │           └── correlation_analyst.py
+│   │
+│   └── tools/                    # 🛠️ 28 Specialized Tools
+│       ├── __init__.py
+│       ├── quant_tools.py        # 8 tools: market data, technicals, etc.
+│       ├── intel_tools.py        # 8 tools: news, sentiment, macro
+│       ├── risk_tools.py         # 5 tools: VaR, compliance, volatility
+│       ├── strategy_tools.py     # 4 tools: backtest, Monte Carlo
+│       └── system_tools.py       # 3 tools: Memory Bank operations
+│
+├── services/                     # 🔧 Microservices
+│   ├── ingestion-engine/         # Market data ingestion
+│   │   ├── __init__.py
+│   │   ├── connectors/           # Data source connectors
+│   │   │   ├── __init__.py
+│   │   │   ├── kafka_connector_mock.py
+│   │   │   └── clickhouse_mock.py
+│   │   └── data_service.py       # Mock market service
+│   │
+│   ├── memory-bank/              # ChromaDB persistence
+│   │   ├── __init__.py
+│   │   ├── chromadb_wrapper.py   # 9 enhanced methods
+│   │   └── chroma_data/          # 💾 Persistent storage (auto-created)
+│   │
+│   └── backtest-engine/          # Historical strategy validation
+│       ├── __init__.py
+│       ├── data_loader.py        # yfinance integration with caching
+│       └── simulator.py          # 3 strategies, professional metrics
+│
+├── shared/                       # 🔗 Common utilities
+│   ├── __init__.py
+│   ├── protocol/                 # gRPC definitions (future)
+│   │   └── __init__.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── logger.py             # Enhanced logger with file rotation
+│       └── config.py             # Configuration loader (optional)
+│
+├── tests/                        # 🧪 Test suites
+│   ├── __init__.py
+│   └── test_complete_system.py   # 🆕 Comprehensive test (all 4 months + hierarchy)
+│
+├── logs/                         # 📝 Auto-created log files
+│   └── titan-YYYYMMDD.log        # Daily logs with rotation
+│
+└── venv/                         # Python virtual environment (excluded from git)
 ```
 
 ---
 
-## ⭐ AGENT_PLATFORM/ - Core Agent System
+## 🗂️ File Count Summary
 
-**Purpose**: All agents, tools, and agent-related code
+| Directory | Files | Purpose |
+|-----------|-------|---------|
+| Root | 5 | Entry point, config, dependencies |
+| .github/ | 5+ | Documentation & workflows |
+| docs/ | 3 | Essential docs only |
+| agent_platform/ | 20+ | 17 agents + dashboard |
+| services/ | 10+ | 4 microservices |
+| shared/ | 3+ | Common utilities |
+| tests/ | 1 | Comprehensive test suite |
+| **Total** | **~50** | **Clean & organized** |
 
+---
+
+## 🎯 Key Design Principles
+
+### 1. User Control Centralized in .env
+**ALL** user-controllable settings are in `.env`:
+- API keys (Google Gemini)
+- Model selection (high/medium/low priority tasks)
+- L2 agent toggles (enable/disable individual heads)
+- Rate limits (API requests per day/minute)
+- Agent behavior (response word limits, synthesis weights)
+- Performance (parallel processing, timeouts)
+- Risk management (VETO, drawdown thresholds)
+- Caching, logging, feature flags
+
+### 2. Clean Documentation Structure
+- **Root**: README.md for quick overview
+- **.github/**: Technical documentation (API, Testing, Deployment)
+- **docs/**: Only 3 essential files (Tasks, Changelog, Structure)
+
+### 3. Monorepo Architecture
+- **agent_platform/**: Main workspace (Google ADK)
+- **services/**: Microservices (ingestion, memory, backtest)
+- **shared/**: Common utilities (logger, config)
+- **Clear separation of concerns**
+
+### 4. Entry Point Design
+- **main.py**: Interactive CLI in root directory
+- **Integrated dashboard**: No separate dashboard.py calls needed
+- **User-friendly**: Menu-driven interface
+
+---
+
+## 🚀 Running the System
+
+### Option 1: Interactive CLI (Recommended)
+```bash
+python main.py
+
+# Provides menu with options:
+# 1. Query MarketTrendPrincipal
+# 2. View Dashboard
+# 3. Run Tests
+# 4. Configure Settings
+# 5. View Documentation
+# 6. System Information
 ```
-agent_platform/
-├── __init__.py                   # Package initialization
-├── main.py                       # 🚀 CLI Entry point
-│
-├── agents/                       # 17-Agent Hierarchy
-│   ├── __init__.py
-│   ├── root/                     # L1: CEO Level
-│   │   └── market_trend_principal.py   # CEO Agent (orchestrates 4 L2)
-│   ├── leads/                    # L2: Department Heads
-│   │   ├── head_of_quant.py      # Quant Manager (40% weight)
-│   │   ├── head_of_intel.py      # Intel Manager (30% weight)
-│   │   ├── chief_risk_officer.py # Risk Manager (20% + VETO)
-│   │   └── strategy_director.py  # Strategy Manager (10% weight)
-│   └── specialists/              # L3: Specialist Agents
-│       ├── quant_specialists.py  # TechnicalAnalyst, FundamentalAnalyst, MicrostructureAnalyst
-│       ├── intel_specialists.py  # NewsScout, SocialSentiment, MacroEconomist
-│       ├── risk_specialists.py   # VolatilityGuard, ComplianceOfficer
-│       ├── strategy_specialists.py # BacktestEngineer, ScenarioSimulator, CorrelationAnalyst
-│       └── fact_checker.py       # FactChecker (hallucination prevention)
-│
-└── tools/                        # 28 Tools
-    ├── __init__.py
-    ├── quant_tools.py            # 3 tools: market_data, technicals, price_action
-    ├── quant_tools_extended.py   # 5 tools: earnings, PE, order book, liquidity, S/R
-    ├── intel_tools.py            # 8 tools: news, social, macro, sentiment
-    ├── risk_tools.py             # 5 tools: VaR, volatility, compliance, correlation, blackswan
-    ├── strategy_tools.py         # 4 tools: backtest, monte carlo, portfolio correlation, scenarios
-    └── system_tools.py           # 3 tools: user context, agent output tracking, similar analysis
+
+### Option 2: Google ADK Web Interface
+```bash
+cd agent_platform
+adk web
+# Open http://localhost:8000
 ```
 
-### Agent Hierarchy Flow
+### Option 3: Dashboard Only
+```bash
+python agent_platform/dashboard.py
+# Generates text report + HTML dashboard
+```
+
+### Option 4: Python API
+```python
+from agent_platform.agents.root_agent import MarketTrendPrincipal
+
+agent = MarketTrendPrincipal()
+result = agent.query("What's the analysis for Apple?")
+```
+
+---
+
+## 📊 Agent Hierarchy
 
 ```
 L1: MarketTrendPrincipal (CEO)
-    ├── L2: HeadOfQuant (40%)
-    │   ├── L3: TechnicalAnalyst (200 words max)
-    │   ├── L3: FundamentalAnalyst (200 words max)
-    │   └── L3: MicrostructureAnalyst (200 words max)
-    │
-    ├── L2: HeadOfIntel (30%)
-    │   ├── L3: NewsScout (200 words max)
-    │   ├── L3: SocialSentiment (200 words max)
-    │   └── L3: MacroEconomist (200 words max)
-    │
-    ├── L2: ChiefRiskOfficer (20% + ⚠️ VETO POWER)
-    │   ├── L3: VolatilityGuard (200 words max)
-    │   └── L3: ComplianceOfficer (200 words max)
-    │
-    ├── L2: StrategyDirector (10%)
-    │   ├── L3: BacktestEngineer (200 words max)
-    │   ├── L3: ScenarioSimulator (200 words max)
-    │   └── L3: CorrelationAnalyst (200 words max)
-    │
-    └── Special: FactChecker (Google Search verification)
-```
-
----
-
-## 🔧 SERVICES/ - Microservices Layer
-
-**Purpose**: Data ingestion, memory, and backtesting
-
-```
-services/
-├── __init__.py
 │
-├── ingestion-engine/             # Market Data Ingestion
-│   ├── __init__.py
-│   ├── connectors/
-│   │   ├── __init__.py
-│   │   └── yfinance_connector.py  # YFinance integration (5yr data)
-│   └── mock_market_service.py     # Static mock data (AAPL, TSLA, BTC)
+├── L2: HeadOfQuant
+│   ├── L3: TechnicalAnalyst
+│   ├── L3: FundamentalAnalyst
+│   └── L3: MicrostructureAnalyst
 │
-├── memory-bank/                  # Vector Storage (ChromaDB)
-│   ├── __init__.py
-│   └── chromadb_wrapper.py       # 9 methods: user context, agent tracking, historical analysis
+├── L2: HeadOfIntel
+│   ├── L3: NewsScout
+│   ├── L3: SocialSentimentAnalyst
+│   └── L3: MacroEconomist
 │
-└── backtest-engine/              # Strategy Validation
-    ├── __init__.py
-    ├── data_loader.py            # 5yr historical data loader (yfinance + CSV cache)
-    ├── metrics.py                # Sharpe ratio, drawdown, win rate calculations
-    └── simulator.py              # VirtualPortfolio + 3 strategies (buy_and_hold, RSI, MA)
-```
-
-### Services Functionality
-
-**Ingestion Engine**:
-- `MarketDataConnector`: Centralized yfinance data fetching
-- `MockMarketService`: Static data for offline development
-
-**Memory Bank** (9 Enhanced Methods):
-- `store_risk_profile()`: User risk tolerance (LOW/MEDIUM/HIGH)
-- `store_trading_style()`: Trading preferences
-- `get_user_context()`: Comprehensive profile retrieval
-- `store_agent_output()`: Track agent recommendations
-- `retrieve_similar_analysis()`: Historical lookup
-- `get_accuracy_metrics()`: Agent performance tracking
-- `compact_old_data()`: Database maintenance
-
-**Backtest Engine**:
-- `DataLoader`: Downloads 5yr OHLCV, caches to CSV
-- `PerformanceMetrics`: Sharpe, drawdown, win rate, profit factor
-- `BacktestEngine`: Executes buy_and_hold, rsi_strategy, ma_crossover
-
----
-
-## 📦 SHARED/ - Common Utilities
-
-**Purpose**: Logging, errors, protocols
-
-```
-shared/
-├── __init__.py
-├── utils/
-│   ├── __init__.py
-│   ├── logger.py                 # TitanLogger (structured JSON logging)
-│   └── errors.py                 # Custom exceptions (TitanError, DataFetchError, etc.)
-└── protocol/                     # gRPC definitions (future - Month 4)
-```
-
-### Shared Utilities
-
-**Logger** (`TitanLogger`):
-- Structured JSON logging
-- Methods: `info()`, `error()`, `warning()`, `agent_thought()`, `tool_call()`
-
-**Errors**:
-- `TitanError`: Base exception
-- `DataFetchError`: Data retrieval failures
-- `ToolExecutionError`: Tool failures
-- `AgentError`: Agent execution errors
-- `MemoryBankError`: Memory operations
-- `RiskVetoError`: Risk VETO triggered
-
----
-
-## 📚 DOCS/ - Documentation
-
-**Purpose**: Implementation plans, walkthroughs, tasks
-
-```
-docs/
-├── titan_platform_tasks.md       # 📋 Master task list (18 major tasks)
-├── titan_platform_implementation_plan.md  # Month 1 implementation plan
-├── month2_implementation_plan.md # Month 2: Intelligence phase
-├── month3_implementation_plan.md # Month 3: Accuracy & Safety
-├── month4_implementation_plan.md # Month 4: Scale, Speed & Polish
+├── L2: ChiefRiskOfficer (VETO power)
+│   ├── L3: VolatilityGuard
+│   ├── L3: ComplianceOfficer
+│   └── L3: FactChecker
 │
-├── MONTH1_COMPLETE.md            # Month 1 walkthrough & achievements
-├── MONTH2_COMPLETE.md            # Month 2 walkthrough & achievements  
-├── MONTH3_COMPLETE.md            # Month 3 walkthrough & achievements
-│
-├── critical_improvements_month1.md  # MockMarketService + Token budget
-└── month1_walkthrough.md         # Month 1 detailed walkthrough
+└── L2: StrategyDirector
+    ├── L3: BacktestEngineer
+    ├── L3: ScenarioSimulator
+    └── L3: CorrelationAnalyst
 ```
+
+**Synthesis Weights**: 40% Quant, 30% Intel, 20% Risk, 10% Strategy
 
 ---
 
-## 🧪 TESTS/ - Testing
+## 🛠️ Tool Categories
 
-**Purpose**: Unit and integration tests
+### Quant Tools (8)
+- Market data, technical indicators, price action
+- Fundamentals, order book, liquidity
 
-```
-tests/
-├── __init__.py
-└── test_quant_agent.py           # Basic quant agent test (placeholder for Month 4)
-```
+### Intel Tools (8)
+- News aggregation, social sentiment
+- Economic indicators, geopolitical events
 
----
+### Risk Tools (5)
+- VaR, volatility, compliance
+- Correlation, black swan detection
 
-## 📊 System Architecture Overview
+### Strategy Tools (4)
+- Backtest (3 strategies), Monte Carlo
 
-### Data Flow
-
-```
-User Query
-    ↓
-L1: MarketTrendPrincipal
-    ├── Dispatches to: HeadOfQuant (40%)
-    │   └── Uses: market_data, technicals, earnings, PE tools
-    ├── Dispatches to: HeadOfIntel (30%)
-    │   └── Uses: news, social, macro, sentiment tools
-    ├── Dispatches to: ChiefRiskOfficer (20%)
-    │   └── Uses: VaR, volatility, compliance tools
-    │   └── ⚠️ VETO POWER (can override all recommendations)
-    └── Dispatches to: StrategyDirector (10%)
-        └── Uses: backtest, monte_carlo, correlation tools
-    ↓
-Weighted Synthesis (40/30/20/10)
-    ↓
-FactChecker verifies claims
-    ↓
-Memory Bank stores recommendation
-    ↓
-Final Recommendation to User
-```
-
-### Service Integration
-
-```
-Agents
-    ↓ (call tools)
-Tools
-    ↓ (fetch data from)
-Services
-    ├── Ingestion Engine → yfinance API
-    ├── Memory Bank → ChromaDB
-    └── Backtest Engine → Historical CSV cache
-```
+### System Tools (3)
+- Memory Bank operations (get/store context)
 
 ---
 
-## 🔑 Key Files & Their Purpose
+## 💾 Data Storage
 
-| File | Purpose |
-|------|---------|
-| `agent_platform/main.py` | CLI entry point for testing |
-| `agent_platform/agents/root/market_trend_principal.py` | L1 CEO agent |
-| `services/memory-bank/chromadb_wrapper.py` | User personalization & agent tracking |
-| `services/backtest-engine/simulator.py` | Real historical backtests |
-| `shared/utils/logger.py` | Structured logging |
-| `.env` | API keys (GOOGLE_API_KEY) |
+### Temporary Files
+- `logs/titan-*.log` - Daily log files (auto-rotated)
+- `dashboard.html` - Generated dashboard (overwritten)
 
----
+### Persistent Storage
+- `services/memory-bank/chroma_data/` - User profiles, analysis history
+- `.env` - User configuration (not committed to git)
 
-## 📈 Progress Metrics
-
-| Component | Completion |
-|-----------|------------|
-| **Agents** | 17/17 (100%) ✅ |
-| **Tools** | 28/28 (100%) ✅ |
-| **Services** | 4/4 (100%) ✅ |
-| **Memory Bank** | Enhanced (100%) ✅ |
-| **Backtest Engine** | Operational (100%) ✅ |
-| **Documentation** | 67% (Month 4 WIP) |
+### Cached Data
+- **Removed**: `data/` folder deleted (not used)
 
 ---
 
-## 🚀 Quick Start
+## 🧪 Testing
 
-### Installation
+### Comprehensive Test Suite
+**Location**: `tests/test_complete_system.py`
 
+**Covers**:
+1. **Month 1 Tests**: Foundation (L1, L2, L3 initialization)
+2. **Month 2 Tests**: Intelligence (all 17 agents, 28 tools)
+3. **Month 3 Tests**: Accuracy (Memory Bank, backtest validation)
+4. **Month 4 Tests**: Production (logging, dashboard, config)
+5. **Hierarchy Tests**: L1↔L2↔L3 communication (full round-trip)
+
+**Run Tests**:
 ```bash
-# Clone repository
-git clone https://github.com/Devvekariya711/titan-platform.git
-cd titan-platform
+python tests/test_complete_system.py
+```
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+---
 
-# Install dependencies
+## ⚙️ Configuration
+
+### Primary: .env File
+**Location**: `.env` (copy from `.env.example`)
+
+**60+ Settings** including:
+- API keys
+- Model selection (task-based)
+- L2 agent toggles
+- Rate limits
+- Agent word limits
+- Parallel processing
+- Synthesis weights
+- Risk management
+- Caching & logging
+
+### All settings in ONE place - no scattered config files!
+
+---
+
+## 📦 Dependencies
+
+**Key Libraries**:
+- `google-adk` - Agent framework
+- `chromadb` - Vector database (Memory Bank)
+- `yfinance` - Market data (5yr historical)
+- `pandas` - Data manipulation
+- `pandas-ta` - Technical indicators
+- `pydantic` - Data validation
+- `python-dotenv` - Environment variables
+
+**Install**:
+```bash
 pip install -r requirements.txt
-
-# Set up API key
-echo "GOOGLE_API_KEY=your_key_here" > .env
-```
-
-### Usage
-
-```bash
-# Run CLI
-cd agent_platform
-python main.py
-
-# Example queries:
-# "What is the RSI of Apple?"
-# "Should I buy Tesla?"
-# "Backtest a buy-and-hold strategy on NVDA for 5 years"
 ```
 
 ---
 
-## 🏗️ Development Philosophy
+## 🔐 Security
 
-**"Move Slowly but Very Strongly"**
-
-✅ Every component tested before deployment  
-✅ Clean git commit history  
-✅ Comprehensive documentation  
-✅ Token budget enforced (200/250 words)  
-✅ Incremental monthly milestones
+- `.env` file excluded from git
+- API keys never hardcoded
+- Memory Bank data local only
+- Permissions set on sensitive directories
+-  See `.github/SECURITY.md` for full policy
 
 ---
 
-**Last Updated**: Month 3 Complete (v0.4-month3)  
-**Next Phase**: Month 4 - Observability & Documentation
+## 📝 Documentation Map
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| README | Root | Project overview & quick start |
+| API Reference | .github/ | All agents & tools |
+| Testing Guide | .github/ | Test scenarios & troubleshooting |
+| Deployment Guide | .github/ | Production setup & Docker |
+| Master Tasks | docs/ | Complete task history |
+| Changelog | docs/ | Monthly changes & roadmap |
+| Project Structure | docs/ | This file |
+| Security Policy | .github/ | Security guidelines |
+
+---
+
+## 🎯 Success Metrics
+
+| Metric | Status |
+|--------|--------|
+| Agents | ✅ 17 |
+| Tools | ✅ 28 |
+| Services | ✅ 4 |
+| Response Time | ✅ <3s |
+| Memory Bank | ✅ Operational |
+| Backtest | ✅ Real 5yr data |
+| Documentation | ✅ Complete (4 guides) |
+| Testing | ✅ Automated (5 scenarios) |
+| Production Ready | ✅ v1.0.0 |
+
+---
+
+**Version**: 1.0.0  
+**Status**: 🚀 Production Ready  
+**Last Updated**: December 2024
+
+**Philosophy**: "Move Slowly but Very Strongly"
