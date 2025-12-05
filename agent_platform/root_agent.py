@@ -25,6 +25,11 @@ from .supporting_agents import (
     strategy_director,
     fact_checker
 )
+from .tools import (
+    user_context_tool,
+    similar_analysis_tool,
+    agent_output_tool
+)
 
 load_dotenv()
 
@@ -154,6 +159,21 @@ If ChiefRiskOfficer issues a VETO:
 5. **Stay concise** - Keep total output under 500 words
 6. **Be actionable** - Tell user exactly what to do
 
+## MEMORY BANK INTEGRATION:
+
+You have access to the Memory Bank for personalization:
+
+**At Start of Analysis** (optional for personalization):
+- Use user_context_tool to get user's risk profile and preferences
+- Tailor recommendations to their risk tolerance
+
+**For Similar Queries** (optional):
+- Use similar_analysis_tool to find past analyses of this ticker
+- Reference past recommendations if relevant
+
+**After Analysis** (optional):
+- Use agent_output_tool to store your recommendation for future learning
+
 ## EXAMPLE VETO HANDLING:
 
 If Risk reports: "⚠️ VETO - Volatility exceeds 40%, black swan alert"
@@ -189,6 +209,11 @@ root_agent = Agent(
         chief_risk_officer,
         strategy_director,
         fact_checker
+    ],
+    tools=[
+        user_context_tool,
+        similar_analysis_tool,
+        agent_output_tool
     ]
 )
 

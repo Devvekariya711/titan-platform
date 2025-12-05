@@ -49,6 +49,72 @@ def get_market_data(ticker: str, period: str = "1mo") -> Dict:
         return {"error": str(e), "success": False}
 
 
+def get_live_price(ticker: str) -> Dict:
+    """
+    Get LIVE stock price from Yahoo Finance (yfinance).
+    This is REAL-TIME data with ~15-20 minute delay from market.
+    
+    Args:
+        ticker: Stock symbol (e.g., AAPL, TSLA, MSFT)
+        
+    Returns:
+        dict with live price, change, and market status
+    """
+    try:
+        import yfinance as yf
+        from datetime import datetime
+        
+        stock = yf.Ticker(ticker)
+        
+        # Use fast_info for quick live data (no API call delay)
+        fast_info = stock.fast_info
+        
+        current_price = fast_info.get('lastPrice', None)
+        previous_close = fast_info.get('previousClose', None)
+        market_cap = fast_info.get('marketCap', None)
+        
+        if current_price is None:
+            # Fallback to history
+            hist = stock.history(period="1d")
+            if not hist.empty:
+                current_price = float(hist['Close'].iloc[-1])
+                previous_close = float(hist['Open'].iloc[0])
+        
+        # Calculate change
+        if current_price and previous_close:
+            change = current_price - previous_close
+            change_pct = (change / previous_close) * 100
+        else:
+            change = 0
+            change_pct = 0
+        
+        result = {
+            "ticker": ticker.upper(),
+            "live_price": round(current_price, 2) if current_price else None,
+            "previous_close": round(previous_close, 2) if previous_close else None,
+            "change": round(change, 2),
+            "change_percent": round(change_pct, 2),
+            "direction": "📈 UP" if change > 0 else "📉 DOWN" if change < 0 else "➡️ FLAT",
+            "market_cap": f"${market_cap/1e9:.1f}B" if market_cap else None,
+            "timestamp": datetime.now().isoformat(),
+            "source": "Yahoo Finance (yfinance)",
+            "delay": "~15-20 minute delay from market",
+            "success": True
+        }
+        
+        logger.info(f"Live price for {ticker}: ${current_price}", ticker=ticker, price=current_price)
+        return result
+        
+    except Exception as e:
+        logger.error(f"Live price error: {str(e)}", ticker=ticker)
+        return {
+            "ticker": ticker.upper(),
+            "error": str(e),
+            "success": False,
+            "hint": "Check if ticker symbol is valid (e.g., AAPL, TSLA, MSFT)"
+        }
+
+
 def calculate_technicals(ticker: str, period: str = "3mo") -> Dict:
     """Calculate comprehensive technical indicators (RSI, MACD, Bollinger, MAs)"""
     try:
@@ -746,8 +812,9 @@ def log_event(event_type: str, data: Dict[str, Any]) -> Dict:
 # WRAP ALL TOOLS AS ADK FunctionTool OBJECTS
 # ============================================================================
 
-# QUANT TOOLS (8)
+# QUANT TOOLS (9) - including live price
 market_data_tool = FunctionTool(func=get_market_data)
+live_price_tool = FunctionTool(func=get_live_price)  # NEW: Real-time Yahoo Finance prices
 technical_indicators_tool = FunctionTool(func=calculate_technicals)
 price_action_tool = FunctionTool(func=analyze_price_action)
 fundamental_data_tool = FunctionTool(func=get_fundamental_data)
@@ -793,8 +860,8 @@ log_tool = FunctionTool(func=log_event)
 # ============================================================================
 
 __all__ = [
-    # Quant tool objects (8)
-    'market_data_tool', 'technical_indicators_tool', 'price_action_tool',
+    # Quant tool objects (9) - including live price
+    'market_data_tool', 'live_price_tool', 'technical_indicators_tool', 'price_action_tool',
     'fundamental_data_tool', 'earnings_tool', 'volume_tool',
     'chart_patterns_tool', 'market_structure_tool',
     

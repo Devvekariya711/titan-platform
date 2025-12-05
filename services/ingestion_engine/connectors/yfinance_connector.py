@@ -73,6 +73,20 @@ class MarketDataConnector:
             logger.error(error_msg, ticker=ticker, error=str(e))
             raise DataFetchError(error_msg, ticker=ticker)
 
+    def get_historical_data(self, ticker: str, period: str = "1mo") -> dict:
+        """
+        Alias for get_ohlcv for backward compatibility.
+        Some tools call this method instead of get_ohlcv.
+        
+        Args:
+            ticker: Stock symbol (e.g., AAPL, TSLA)
+            period: Time period (1d, 5d, 1mo, 3mo, 6mo, 1y, 5y)
+            
+        Returns:
+            dict with ticker, data, current_price, and metadata
+        """
+        return self.get_ohlcv(ticker, period)
+
     def get_realtime_price(self, ticker: str) -> float:
         """
         Get current price (simulates real-time stream)

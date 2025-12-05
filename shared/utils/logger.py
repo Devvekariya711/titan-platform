@@ -2,13 +2,20 @@
 Structured JSON Logger for Titan Platform
 Provides consistent logging across all services and agents with file rotation,
 performance tracking, and error aggregation.
+
+Features:
+- Daily log rotation (keeps last 5 log files)
+- Query/response logging for agent interactions
+- Performance metric tracking
+- Error aggregation
 """
 import json
 import logging
 import os
 import time
+import glob
 from datetime import datetime
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 from typing import Any, Dict, Optional, Callable
 from functools import wraps
 from collections import defaultdict
@@ -18,14 +25,40 @@ _error_stats = defaultdict(int)
 _performance_metrics = defaultdict(list)
 
 
+def cleanup_old_logs(log_dir: str, max_files: int = 5):
+    """
+    Remove old log files, keeping only the most recent ones.
+    
+    Args:
+        log_dir: Directory containing log files
+        max_files: Maximum number of log files to keep (default: 5)
+    """
+    try:
+        log_pattern = os.path.join(log_dir, "titan-*.log*")
+        log_files = glob.glob(log_pattern)
+        
+        # Sort by modification time (newest first)
+        log_files.sort(key=os.path.getmtime, reverse=True)
+        
+        # Delete files beyond max_files limit
+        for old_file in log_files[max_files:]:
+            try:
+                os.remove(old_file)
+            except OSError:
+                pass  # Ignore errors deleting files
+    except Exception:
+        pass  # Don't let cleanup errors break logging
+
+
 class TitanLogger:
     """Enhanced structured logger for observability"""
 
     def __init__(self, service_name: str, log_level: str = "INFO",
-                 enable_file_logging: bool = True):
+                 enable_file_logging: bool = True, max_log_files: int = 5):
         self.service_name = service_name
         self.logger = logging.getLogger(service_name)
         self.logger.setLevel(getattr(logging, log_level.upper()))
+        self.max_log_files = max_log_files
 
         # Clear any existing handlers to avoid duplicates
         self.logger.handlers.clear()
@@ -35,20 +68,28 @@ class TitanLogger:
         console_handler.setFormatter(logging.Formatter('%(message)s'))
         self.logger.addHandler(console_handler)
 
-        # File handler with rotation (10MB per file, keep 5 files)
+        # File handler with daily rotation (keeps last 5 log files by default)
         if enable_file_logging:
             log_dir = "data/logs"
             os.makedirs(log_dir, exist_ok=True)
+            
+            # Clean up old log files on initialization
+            cleanup_old_logs(log_dir, max_log_files)
+            
             log_file = os.path.join(
                 log_dir, f"titan-{datetime.now().strftime('%Y%m%d')}.log")
 
-            file_handler = RotatingFileHandler(
+            # Use TimedRotatingFileHandler for daily rotation
+            file_handler = TimedRotatingFileHandler(
                 log_file,
-                maxBytes=10 * 1024 * 1024,  # 10MB
-                backupCount=5
+                when='midnight',
+                interval=1,
+                backupCount=max_log_files - 1  # Current + backups = max_log_files
             )
             file_handler.setFormatter(logging.Formatter('%(message)s'))
+            file_handler.suffix = "%Y%m%d"
             self.logger.addHandler(file_handler)
+
 
     def _log(self, level: str, message: str, **kwargs):
         """Internal method to create structured log entry"""
@@ -141,6 +182,40 @@ class TitanLogger:
                   event_type="performance")
 
         _performance_metrics[operation].append(duration_ms)
+
+    def log_query(self, query: str, user_id: str = "default", 
+                  session_id: str = None):
+        """
+        Log incoming user query for interaction tracking.
+        
+        Args:
+            query: The user's query text
+            user_id: User identifier (default: "default")
+            session_id: Optional session identifier
+        """
+        self._log("INFO", "User query received",
+                  query=query[:500],  # Limit query length
+                  user_id=user_id,
+                  session_id=session_id,
+                  event_type="user_query")
+
+    def log_response(self, response: str, agent: str = "market_trend_principal",
+                     query_id: str = None, duration_ms: float = None):
+        """
+        Log agent response for interaction tracking.
+        
+        Args:
+            response: The agent's response text
+            agent: Name of the responding agent
+            query_id: Optional query identifier for correlation
+            duration_ms: Optional response time in milliseconds
+        """
+        self._log("INFO", "Agent response generated",
+                  response=response[:1000] if response else "",  # Limit response length
+                  agent=agent,
+                  query_id=query_id,
+                  duration_ms=duration_ms,
+                  event_type="agent_response")
 
     @staticmethod
     def get_error_stats() -> Dict[str, int]:
